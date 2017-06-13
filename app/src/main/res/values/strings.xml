@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">NetsizeQA</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="ENV">
+        <item>int_avp</item>
+        <item>qa_avp</item>
+        <item>prod_avp</item>
+        <item>stage_avp</item>
+        <item>preprod_avp</item>
+        <item>dev_avp</item>
+        <item>local_avp</item>
+    </string-array>
+</resources>
