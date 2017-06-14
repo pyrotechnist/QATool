@@ -1,5 +1,7 @@
 package com.netsize.netsizeqa;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,15 @@ public interface MainContract {
 
         void showCountries();
 
-        void showEnvs(int textArrayResId);
+        void showProgressDialog();
 
-        void showTestcases();
+        void dismissProgressDialog();
+
+        void updateDialog(int progress);
+
+        void showTestcases(String tests);
+
+        Context getContext();
 
 
     }
@@ -24,11 +32,9 @@ public interface MainContract {
 
         void loadCountries();
 
-        void loadEnvs ();
-
         void loadTestcases ();
 
-
+        void downloadXML();
 
 
     }

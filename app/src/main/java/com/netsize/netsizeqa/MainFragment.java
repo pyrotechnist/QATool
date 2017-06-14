@@ -1,5 +1,7 @@
 package com.netsize.netsizeqa;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,10 @@ public class MainFragment extends Fragment implements MainContract.View {
     private Spinner spinnerCountry;
 
     private Spinner spinnerEnv;
+
+    private TextView textView;
+
+    private ProgressDialog mProgressDialog;
 
 
     public MainFragment() {
@@ -51,6 +58,16 @@ public class MainFragment extends Fragment implements MainContract.View {
 
         spinnerEnv =  (Spinner) root.findViewById(R.id.spinner_env);
 
+        textView = (TextView) root.findViewById(R.id.test) ;
+
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("Downloading cache file..");
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setMax(100);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setCancelable(true);
+
+
         setHasOptionsMenu(true);
 
         return root;
@@ -71,19 +88,30 @@ public class MainFragment extends Fragment implements MainContract.View {
     }
 
     @Override
-    public void showEnvs(int envArrayResId) {
+    public void dismissProgressDialog() {
+        mProgressDialog.dismiss();
+    }
 
-       /* ArrayAdapter<CharSequence> adapter;
-        adapter = ArrayAdapter.createFromResource(getActivity(),
-                    R.array.ENV, android.R.layout.simple_spinner_item);*/
+    @Override
+    public void showProgressDialog() {
+        mProgressDialog.show();
+    }
 
-        spinnerEnv.setVisibility(View.VISIBLE);
+    @Override
+    public void updateDialog(int progress) {
+        if(progress ==100)
+        {
+            mProgressDialog.dismiss();
+        }
+        else
+            mProgressDialog.setProgress(progress);
 
     }
 
     @Override
-    public void showTestcases() {
+    public void showTestcases(String tests) {
 
+        textView.setText(tests);
     }
 
     @Override
@@ -91,5 +119,11 @@ public class MainFragment extends Fragment implements MainContract.View {
 
         mPresenter = presenter;
 
+    }
+
+    @Override
+    public Context getContext(){
+
+        return getActivity();
     }
 }
