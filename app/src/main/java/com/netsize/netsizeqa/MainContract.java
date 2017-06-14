@@ -13,9 +13,11 @@ public interface MainContract {
 
         void showCountries();
 
-        void showEnvs(int textArrayResId);
+        void showProgressDialog();
 
-        void showTestcases();
+        void updateDialog(int progress);
+
+        void showTestcases(String tests);
 
 
     }
@@ -24,11 +26,9 @@ public interface MainContract {
 
         void loadCountries();
 
-        void loadEnvs ();
-
         void loadTestcases ();
 
-
+        void downloadXML();
 
 
     }
