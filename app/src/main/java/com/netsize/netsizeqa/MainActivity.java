@@ -9,11 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,16 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-       /* Spinner spinner =  (Spinner) findViewById(R.id.spinner_env1);
-
-        List<String> list = new ArrayList<String>();
-        list.add("list 1");
-        list.add("list 2");
-        list.add("list 3");
-        ArrayAdapter<String> spinnerCountShoesArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.ENV));
-        spinner.setAdapter(spinnerCountShoesArrayAdapter);
-*/
 
         MainFragment mainFragment =
                 (MainFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

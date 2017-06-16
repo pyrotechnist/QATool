@@ -5,26 +5,29 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.netsize.netsizeqa.utils.PullXmlParser;
+import com.netsize.netsizeqa.utils.QaViewModel;
+
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 import android.content.Context;
 
-import com.netsize.netsizeqa.utils.PullXmlParser;
 
 import static android.R.id.input;
 
@@ -81,14 +84,28 @@ public class MainPresenter implements MainContract.Presenter {
     private void getTestCases(){
 
 
-
+        FileInputStream file= null;
         try {
 
-            FileInputStream file= mMainFragment.getContext().openFileInput("cache.xml");
-        List<TestCase> cases = PullXmlParser.getTestCases(file);
+            file= mMainFragment.getContext().openFileInput("cache.xml");
+            QaViewModel qaViewModel  = PullXmlParser.getTestCases(file);
+
+            if(qaViewModel != null)
+            {
+                mMainFragment.showTestcases(qaViewModel);
+            }
+
+
+
+
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            try { // because close can throw an exception
+                if (file != null) file.close();
+            } catch (IOException ignored) {}
         }
+
 
     }
 
@@ -97,7 +114,7 @@ public class MainPresenter implements MainContract.Presenter {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mMainFragment.showProgressDialog();
+            //mMainFragment.showProgressDialog();
         }
 
         @Override
@@ -116,7 +133,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                 String dd = response.header("");
 
-              //  String dd = response.body().string();
+                //  String dd = response.body().string();
                 long contentLength = body.contentLength();
                 InputStream input = response.body().byteStream();
 
@@ -160,7 +177,7 @@ public class MainPresenter implements MainContract.Presenter {
 
 
 
-                mMainFragment.updateDialog(100);
+               // mMainFragment.updateDialog(100);
                 return "done";
 
             }catch (Exception e){
@@ -177,8 +194,8 @@ public class MainPresenter implements MainContract.Presenter {
 
         @Override
         protected void onPostExecute(String s) {
-            mMainFragment.dismissProgressDialog();
-            mMainFragment.showTestcases(s);
+            //mMainFragment.dismissProgressDialog();
+            //mMainFragment.showTestcases(s);
             getTestCases();
 
         }

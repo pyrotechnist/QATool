@@ -1,14 +1,24 @@
 package com.netsize.netsizeqa;
 
 /**
- * Created by LONGYUAN on 2017/6/14.
+ * Created by loxu on 15/06/2017.
  */
 
 public class TestCase {
-
     private int  id;
+    private String title;
+    private String country;
+    private String productName;
+    private String serviceId;
+    private String command;
 
+    public String getCommand() {
+        return command;
+    }
 
+    public void setCommand(String command) {
+        this.command = command;
+    }
 
     public int getId() {
         return id;
@@ -34,18 +44,22 @@ public class TestCase {
         this.country = country;
     }
 
-    private String title;
-    private String country;
-
-    public String getCommand() {
-        return command;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setCommand(String command) {
-        command = command;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    private String command;
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
+    }
+
 
 
 }

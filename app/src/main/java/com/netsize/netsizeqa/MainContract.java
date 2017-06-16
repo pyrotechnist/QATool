@@ -2,6 +2,8 @@ package com.netsize.netsizeqa;
 
 import android.content.Context;
 
+import com.netsize.netsizeqa.utils.QaViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,19 +15,15 @@ public interface MainContract {
 
     interface View extends BaseView<Presenter>{
 
-        void showCountries();
+        void showCountries(String[] countries);
 
         void showProgressDialog();
 
-        void dismissProgressDialog();
-
         void updateDialog(int progress);
 
-        void showTestcases(String tests);
+        void showTestcases(QaViewModel qaViewModel);
 
         Context getContext();
-
-
     }
 
     interface Presenter extends  BasePresenter{
