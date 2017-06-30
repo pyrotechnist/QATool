@@ -6,22 +6,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.netsize.netsizeqa.data.TestCase;
 import com.netsize.netsizeqa.utils.QaViewModel;
-import com.netsize.netsizeqa.utils.TestcasesListAdapter;
+import com.netsize.netsizeqa.utils.RecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by loxu on 13/06/2017.
@@ -39,11 +43,17 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     private String selectedCountry;
 
-    private ListView testcasesListView;
+   // private ListView testcasesListView;
+
+    private RecyclerView testcasesRecyclerView;
+
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private ProgressDialog mProgressDialog;
 
-    private static List<TestCase> mTestList = new LinkedList<TestCase>();
+    private List<TestCase> mTestList = null;
+
+    Map<String,List<TestCase>> mTestCasesMap = null;
 
 
     public MainFragment() {
@@ -94,7 +104,10 @@ public class MainFragment extends Fragment implements MainContract.View {
 
         //textView = (TextView) root.findViewById(R.id.test);
 
-        testcasesListView = (ListView)root.findViewById(R.id.testcases_list) ;
+        testcasesRecyclerView = (RecyclerView) root.findViewById(R.id.testcases_list) ;
+        testcasesRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        testcasesRecyclerView.setLayoutManager(mLayoutManager);
 
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage("Downloading cache file..");
@@ -132,32 +145,33 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     }
 
+    /**
+     *
+
+     */
     @Override
-    public void showTestcases(QaViewModel qaViewModel) {
+    public void showTestcases(final Map<String,List<TestCase>> testCasesMap) {
 
+         mTestCasesMap = new HashMap<String,List<TestCase>>();
 
-        if(!qaViewModel.TestCases.isEmpty())
-
+        if(!testCasesMap.isEmpty())
         {
-
-            String[] countries = qaViewModel.CountryList.isEmpty() ? new String[0] : qaViewModel.CountryList.toArray(new String[qaViewModel.CountryList.size()]);
-
-            this.showCountries(countries);
-
+            final String[] countries = testCasesMap.keySet().toArray(new String[testCasesMap.keySet().size()]);
             selectedCountry = countries[0];
+            mTestCasesMap = testCasesMap;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    showCountries(countries);
+
+                    updateTestCases(selectedCountry);
+
+                }
+            });
+
+
         }
-
-
-        if(qaViewModel.TestCases != null )
-        {
-
-            mTestList = qaViewModel.TestCases;
-
-            updateTestCases(selectedCountry);
-
-        }
-
-
     }
 
 
@@ -172,19 +186,27 @@ public class MainFragment extends Fragment implements MainContract.View {
     private void updateTestCases (String country){
 
 
+        if(mTestCasesMap.get(country) != null)
+        {
+            mTestList = mTestCasesMap.get(country);
 
-        Iterator<TestCase> it = mTestList.iterator();
-        List<TestCase> filteredList = new LinkedList<TestCase>();
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(mTestList,getContext());
+
+            testcasesRecyclerView.setAdapter(adapter);
+        }
+
+
+      /*  Iterator<TestCase> it = mTestList.iterator();
+        final List<TestCase> filteredList = new LinkedList<TestCase>();
         while (it.hasNext()) {
             TestCase local = it.next();
 
             if (local.getCountry().equalsIgnoreCase(country))
                 filteredList.add(local);
         }
+*/
+        //TestCase[] arr = filteredList.toArray(new TestCase[mTestList.size()]);
 
-        TestCase[] arr = filteredList.toArray(new TestCase[mTestList.size()]);
-        TestcasesListAdapter adapter = new TestcasesListAdapter(getActivity(),arr);
-        testcasesListView.setAdapter(adapter);
 
     }
 

@@ -9,9 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.netsize.netsizeqa.R;
-import com.netsize.netsizeqa.TestCase;
-
-import java.util.List;
+import com.netsize.netsizeqa.data.TestCase;
 
 /**
  * Created by loxu on 15/06/2017.

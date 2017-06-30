@@ -65,10 +65,10 @@ public class TestCaseRepository implements TestCaseSource {
     public void getTestCases(@NonNull final LoadTaskCasesCallback callback) {
 
         mTasksRemoteDataSource.getTestCases(new LoadTaskCasesCallback() {
-            @Override
-            public void onTasksLoaded(List<TestCase> tasks) {
+                @Override
+            public void onTasksLoaded(Map<String,List<TestCase>> testCasesMap) {
                 //refreshCache(tasks);
-                callback.onTasksLoaded(new ArrayList<>(mCachedTasks.values()));
+                callback.onTasksLoaded(testCasesMap);
             }
 
             @Override

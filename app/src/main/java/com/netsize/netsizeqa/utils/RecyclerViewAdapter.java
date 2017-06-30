@@ -1,15 +1,17 @@
 package com.netsize.netsizeqa.utils;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netsize.netsizeqa.R;
-import com.netsize.netsizeqa.TestCase;
+import com.netsize.netsizeqa.data.TestCase;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by loxu on 15/06/2017.
@@ -17,25 +19,27 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.DataObjectHolder> {
 
-    private ArrayList<TestCase> mDataset;
+    private List<TestCase> mDataset;
     private static MyClickListener myClickListener;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        //public TextView mTextView;
 
         public ViewHolder(TextView v) {
             super(v);
-            mTextView = v;
+            //mTextView = v;
         }
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View
-            .OnClickListener {
+            /*implements View
+            .OnClickListener */
+    {
         TextView serviceId;
         TextView title;
 
@@ -44,24 +48,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             serviceId = (TextView) itemView.findViewById(R.id.serviceid);
             title = (TextView) itemView.findViewById(R.id.label);
             //Log.i(LOG_TAG, "Adding Listener");
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
         }
 
-        @Override
+       /* @Override
         public void onClick(View v) {
             myClickListener.onItemClick(getAdapterPosition(), v);
-        }
+        }*/
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
+   public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecyclerViewAdapter(ArrayList<TestCase> myDataset) {
+    public RecyclerViewAdapter(List<TestCase> myDataset, Context context) {
         mDataset = myDataset;
-    }
+        mContext = context;
 
+    }
     // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapter.DataObjectHolder onCreateViewHolder(ViewGroup parent,
@@ -89,9 +94,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // - replace the contents of the view with that element
         //holder.mTextView.setText(mDataset[position].getmText1());
 
-        holder.title.setText(mDataset.get(position).getTitle());
-        holder.serviceId.setText(mDataset.get(position).getServiceId());
+        final TestCase testCase = mDataset.get(position);
 
+        holder.title.setText(testCase.getTitle());
+        holder.serviceId.setText(testCase.getServiceId());
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(mContext, testCase.getCommand()+testCase.getTitle(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     public void addItem(TestCase dataObj, int index) {

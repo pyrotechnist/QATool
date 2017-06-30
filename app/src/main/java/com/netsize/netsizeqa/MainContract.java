@@ -2,10 +2,12 @@ package com.netsize.netsizeqa;
 
 import android.content.Context;
 
+import com.netsize.netsizeqa.data.TestCase;
 import com.netsize.netsizeqa.utils.QaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by loxu on 13/06/2017.
@@ -21,7 +23,7 @@ public interface MainContract {
 
         void updateDialog(int progress);
 
-        void showTestcases(QaViewModel qaViewModel);
+        void showTestcases(Map<String,List<TestCase>> testCasesMap);
 
         Context getContext();
     }

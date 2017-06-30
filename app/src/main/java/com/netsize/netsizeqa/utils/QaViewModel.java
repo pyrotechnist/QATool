@@ -1,12 +1,7 @@
 package com.netsize.netsizeqa.utils;
 
-import android.util.Xml;
+import com.netsize.netsizeqa.data.TestCase;
 
-import com.netsize.netsizeqa.TestCase;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

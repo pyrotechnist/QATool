@@ -2,15 +2,17 @@ package com.netsize.netsizeqa.utils;
 
 import android.util.Xml;
 
-import com.netsize.netsizeqa.TestCase;
+import com.netsize.netsizeqa.data.TestCase;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,22 +20,26 @@ import java.util.Set;
  */
 
 public class PullXmlParser {
-    public static QaViewModel getTestCases(FileInputStream file) throws Exception{
-        List<TestCase> TestCases = null;
-        QaViewModel qaViewModel = new QaViewModel();
+    public static Map<String,List<TestCase>> getTestCases(FileInputStream file) throws Exception{
+        Map<String,List<TestCase>> mTestCasesMap = new HashMap<String,List<TestCase>>();
+
+
         TestCase testCase = null;
         XmlPullParser parser= Xml.newPullParser();
-        Set<String> mUniqueCountryList = new HashSet<String>();
+        //Set<String> mUniqueCountryList = new HashSet<String>();
 
         //File file = new File( "cache.xml");
         //FileInputStream fileInputStream = new FileInputStream(file);
         InputStream inStream = file;
         parser.setInput(inStream, "UTF-8");
+
+        String country = "";
         int eventType = parser.getEventType();    //触发第一个事件
         while(eventType!=XmlPullParser.END_DOCUMENT){
             switch(eventType){
                 case XmlPullParser.START_DOCUMENT:
-                    TestCases = new ArrayList<TestCase>();
+
+
                     break;
 
                 case XmlPullParser.START_TAG:    //开始元素事件
@@ -42,7 +48,8 @@ public class PullXmlParser {
                         testCase.setId(new Integer(parser.getAttributeValue(0)));
                         testCase.setTitle(parser.getAttributeValue(1));
                         testCase.setCountry(parser.getAttributeValue(2));
-                        mUniqueCountryList.add(parser.getAttributeValue(2));
+                        country = parser.getAttributeValue(2);
+                       // mUniqueCountryList.add(parser.getAttributeValue(2));
                     }else if(testCase!=null){
                         if("data".equals(parser.getName())){
                             if("Command".equals(parser.getAttributeValue(null,"name")))
@@ -58,7 +65,17 @@ public class PullXmlParser {
 
                 case XmlPullParser.END_TAG:    //结束元素事件
                     if("testCase".equals(parser.getName())){
-                        TestCases.add(testCase);
+
+                        if(mTestCasesMap.containsKey(country)){
+                            mTestCasesMap.get(country).add(testCase);
+                        }else
+                        {
+                            List<TestCase> mTestCasesList = new ArrayList<TestCase>();
+                            mTestCasesList.add(testCase);
+                            mTestCasesMap.put(country,mTestCasesList);
+                        }
+
+
                         testCase = null;
                     }
                     break;
@@ -68,11 +85,8 @@ public class PullXmlParser {
             }
             eventType = parser.next();
         }
-        qaViewModel.TestCases = TestCases;
 
-        qaViewModel.CountryList = mUniqueCountryList;
-
-        return qaViewModel;
+        return mTestCasesMap;
     }
 
 

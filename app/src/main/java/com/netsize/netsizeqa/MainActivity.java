@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.netsize.netsizeqa.data.TestCaseRepository;
+import com.netsize.netsizeqa.data.remote.TestCaseRemoteSource;
+
 public class MainActivity extends AppCompatActivity {
 
     private MainPresenter mMainPresenter;
@@ -35,7 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        mMainPresenter =  new MainPresenter(mainFragment);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        mMainPresenter =  new MainPresenter(TestCaseRepository.getInstance(TestCaseRemoteSource.getInstance(getApplicationContext())),mainFragment);
 
     }
 

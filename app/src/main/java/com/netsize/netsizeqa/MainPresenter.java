@@ -2,9 +2,13 @@ package com.netsize.netsizeqa;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.netsize.netsizeqa.data.TestCase;
+import com.netsize.netsizeqa.data.TestCaseRepository;
+import com.netsize.netsizeqa.data.TestCaseSource;
 import com.netsize.netsizeqa.utils.PullXmlParser;
 import com.netsize.netsizeqa.utils.QaViewModel;
 
@@ -18,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,11 +44,17 @@ public class MainPresenter implements MainContract.Presenter {
 
     private final MainContract.View mMainFragment;
 
+    private TestCaseRepository mTestCaseRepository;
+
+    private Map<String,List<TestCase>> mTestCasesMap;
+
     OkHttpClient client = new OkHttpClient();
 
     FileOutputStream mOutput ;
 
-    public MainPresenter (MainContract.View mainFragment){
+    public MainPresenter (@NonNull TestCaseRepository testCaseRepository, MainContract.View mainFragment){
+
+        mTestCaseRepository = testCaseRepository;
 
         mMainFragment = mainFragment;
 
@@ -63,10 +74,28 @@ public class MainPresenter implements MainContract.Presenter {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void loadTestcases() {
 
-        downloadXML();
+        //downloadXML();
+
+        mTestCaseRepository.getTestCases(new TestCaseSource.LoadTaskCasesCallback() {
+            @Override
+            public void onTasksLoaded(Map<String,List<TestCase>> testCasesMap) {
+
+                mTestCasesMap = testCasesMap;
+
+                mMainFragment.showTestcases(mTestCasesMap);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
 
     }
 
@@ -88,12 +117,12 @@ public class MainPresenter implements MainContract.Presenter {
         try {
 
             file= mMainFragment.getContext().openFileInput("cache.xml");
-            QaViewModel qaViewModel  = PullXmlParser.getTestCases(file);
+            //QaViewModel qaViewModel  = PullXmlParser.getTestCases(file);
 
-            if(qaViewModel != null)
+            /*if(qaViewModel != null)
             {
                 mMainFragment.showTestcases(qaViewModel);
-            }
+            }*/
 
 
 
@@ -109,6 +138,9 @@ public class MainPresenter implements MainContract.Presenter {
 
     }
 
+    /**
+     *
+     */
     public class OkHttpHandler extends AsyncTask<String,String,String> {
 
         @Override
