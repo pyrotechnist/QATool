@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -208,6 +209,20 @@ public class MainFragment extends Fragment implements MainContract.View {
         //TestCase[] arr = filteredList.toArray(new TestCase[mTestList.size()]);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+
+                break;
+            case R.id.menu_refresh:
+                mPresenter.loadTestcases(true);
+                break;
+
+        }
+        return true;
     }
 
     public Context getContext()

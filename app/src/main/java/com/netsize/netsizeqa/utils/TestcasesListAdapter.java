@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.netsize.netsizeqa.R;
@@ -22,7 +23,7 @@ public class TestcasesListAdapter extends ArrayAdapter<TestCase> {
 
 
     public TestcasesListAdapter(Context context, TestCase[] values) {
-        super(context, -1, values);
+        super(context,R.layout.stat_item, values);
         this.context = context;
         this.values = values;
     }
@@ -33,12 +34,13 @@ public class TestcasesListAdapter extends ArrayAdapter<TestCase> {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.testcase, parent, false);
-        TextView textViewLabel = (TextView) rowView.findViewById(R.id.label);
-        TextView textViewServiceId = (TextView) rowView.findViewById(R.id.serviceid);
-        textViewLabel.setText(values[position].getTitle());
+        View rowView = inflater.inflate(R.layout.stat_item, parent, false);
 
-        textViewServiceId.setText(values[position].getServiceId());
+        ImageView countryFlag = (ImageView) rowView.findViewById(R.id.country_flag);
+
+        TextView stat = (TextView) rowView.findViewById(R.id.stat);
+
+
 
         return rowView;
     }

@@ -63,7 +63,7 @@ public class TestCaseRemoteSource implements TestCaseSource {
     }
 
     @Override
-    public void getTestCases(final @NonNull LoadTaskCasesCallback callback) {
+    public void getTestCases(final @NonNull LoadTaskCasesCallback callback, final Boolean forceUpdate) {
 
         String url = "http://dev.pay.netsize.com/merchantdemo/sdk";
 
@@ -87,9 +87,14 @@ public class TestCaseRemoteSource implements TestCaseSource {
                 //callback.onDataNotAvailable();
                 Log.d("TAG", "cache xml start");
                 File downloadedFile = new File(mContext.getFilesDir(), "cache.xml");
-                BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
-                sink.writeAll(response.body().source());
-                sink.close();
+
+                if((downloadedFile.exists()&& forceUpdate) ||  !downloadedFile.exists())
+                {
+                    BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
+                    sink.writeAll(response.body().source());
+                    sink.close();
+                }
+
                 Log.d("TAG", "cache xml saved");
 
                 callback.onTasksLoaded(parseXML());;

@@ -64,7 +64,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void start() {
-        loadTestcases();
+        loadTestcases(false);
     }
 
 
@@ -78,7 +78,7 @@ public class MainPresenter implements MainContract.Presenter {
      *
      */
     @Override
-    public void loadTestcases() {
+    public void loadTestcases(Boolean forceUpdate) {
 
         //downloadXML();
 
@@ -95,7 +95,7 @@ public class MainPresenter implements MainContract.Presenter {
             public void onDataNotAvailable() {
 
             }
-        });
+        },forceUpdate);
 
     }
 

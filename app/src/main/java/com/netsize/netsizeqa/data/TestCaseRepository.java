@@ -62,7 +62,7 @@ public class TestCaseRepository implements TestCaseSource {
 
 
     @Override
-    public void getTestCases(@NonNull final LoadTaskCasesCallback callback) {
+    public void getTestCases(@NonNull final LoadTaskCasesCallback callback, Boolean forceUpdate) {
 
         mTasksRemoteDataSource.getTestCases(new LoadTaskCasesCallback() {
                 @Override
@@ -75,7 +75,7 @@ public class TestCaseRepository implements TestCaseSource {
             public void onDataNotAvailable() {
 
             }
-        });
+        },forceUpdate);
 
     }
 }

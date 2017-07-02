@@ -32,7 +32,7 @@ public interface MainContract {
 
         void loadCountries();
 
-        void loadTestcases ();
+        void loadTestcases (Boolean forceUpdate);
 
         void downloadXML();
 

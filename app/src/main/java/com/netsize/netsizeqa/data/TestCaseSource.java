@@ -19,7 +19,7 @@ public interface TestCaseSource {
         void onDataNotAvailable();
     }
 
-    void getTestCases(@NonNull LoadTaskCasesCallback callback) ;
+    void getTestCases(@NonNull LoadTaskCasesCallback callback, Boolean forceUpdate ) ;
 
 
 }

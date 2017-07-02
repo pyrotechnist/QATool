@@ -11,7 +11,7 @@ import com.netsize.netsizeqa.data.TestCaseSource;
 public class TestCaseLocalSource implements TestCaseSource{
 
     @Override
-    public void getTestCases(@NonNull LoadTaskCasesCallback callback) {
+    public void getTestCases(@NonNull LoadTaskCasesCallback callback, Boolean forceUpdate) {
 
     }
 
