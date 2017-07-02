@@ -30,6 +30,9 @@ public class StatisticsActivity  extends AppCompatActivity {
         StatisticsFragment statisticsFragment = (StatisticsFragment)getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
         if (statisticsFragment == null) {
+
+            statisticsFragment = StatisticsFragment.newInstance();
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.contentFrame, statisticsFragment);
             transaction.commit();

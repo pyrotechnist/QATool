@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
+import com.netsize.netsizeqa.R;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class MySimpleAdapter extends SimpleAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
-        ImageView imageView = (ImageView) view.findViewById(R.id.);
+        ImageView imageView = (ImageView) view.findViewById(R.id.country_flag);
        /* imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

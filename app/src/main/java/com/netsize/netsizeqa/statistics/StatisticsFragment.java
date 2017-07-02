@@ -48,8 +48,8 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             //statMap.put(entry.getKey().toLowerCase(),entry.getValue().size());
             HashMap<String, String> map = new HashMap<String, String>();
 
-            map.put("Country",entry.getKey().toUpperCase());
-            map.put("Testcase",Integer.toString(entry.getValue().size()));
+            //map.put("Country",entry.getKey().toUpperCase());
+           map.put("Testcase",Integer.toString(entry.getValue().size()));
             fillMaps.add(map);
         }
 
@@ -58,9 +58,9 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         //String[] from  = keys.toArray(new String[keys.size()]);
 
         // create the grid item mapping
-        String[] from = new String[] {"Country", "Testcase"};
+        String[] from = new String[] { "Testcase"};
 
-        int[] to = new int[] { R.id.country_flag, R.id.stat };
+        int[] to = new int[] {  R.id.stat };
 
         MySimpleAdapter mySimpleAdapter = new MySimpleAdapter(getContext(),fillMaps,R.id.stat_list,from,to);
 

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.netsize.netsizeqa.data.TestCaseRepository;
 import com.netsize.netsizeqa.data.remote.TestCaseRemoteSource;
+import com.netsize.netsizeqa.statistics.StatisticsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
                                 // Do nothing, we're already on that screen
                                 break;
                             case R.id.statistics_navigation_menu_item:
-                               // Intent intent =
-                                       // new Intent(TasksActivity.this, StatisticsActivity.class);
-                              //  startActivity(intent);
+                               Intent intent =
+                                        new Intent(MainActivity.this, StatisticsActivity.class);
+                               startActivity(intent);
                                 break;
                             default:
                                 break;
