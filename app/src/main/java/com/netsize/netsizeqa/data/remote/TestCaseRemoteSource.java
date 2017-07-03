@@ -65,42 +65,47 @@ public class TestCaseRemoteSource implements TestCaseSource {
     @Override
     public void getTestCases(final @NonNull LoadTaskCasesCallback callback, final Boolean forceUpdate) {
 
-        String url = "http://dev.pay.netsize.com/merchantdemo/sdk";
+        String url = "http://int.pay.netsize.com/merchantdemo/sdk";
 
         //OkHttpHandler okHttpHandler= new OkHttpHandler();
 
-        OkHttpClient client = new OkHttpClient();
+        final File downloadedFile = new File(mContext.getFilesDir(), "cache.xml");
 
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        if((downloadedFile.exists()&& !forceUpdate)) {
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-            }
+            callback.onTasksLoaded(parseXML());
+        }
+        else {
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //Log.d("TAG",response.body().string());
-                //callback.onDataNotAvailable();
-                Log.d("TAG", "cache xml start");
-                File downloadedFile = new File(mContext.getFilesDir(), "cache.xml");
 
-                if((downloadedFile.exists()&& forceUpdate) ||  !downloadedFile.exists())
-                {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    call.cancel();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //Log.d("TAG",response.body().string());
+                    //callback.onDataNotAvailable();
+                    Log.d("TAG", "cache xml start");
+
                     BufferedSink sink = Okio.buffer(Okio.sink(downloadedFile));
                     sink.writeAll(response.body().source());
                     sink.close();
+
+                    Log.d("TAG", "cache xml saved");
+
+                    callback.onTasksLoaded(parseXML());
                 }
-
-                Log.d("TAG", "cache xml saved");
-
-                callback.onTasksLoaded(parseXML());;
-            }
-        });
-
+            });
+        }
 
         //okHttpHandler.execute(url);
 

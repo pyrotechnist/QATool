@@ -168,6 +168,8 @@ public class MainFragment extends Fragment implements MainContract.View {
 
                     updateTestCases(selectedCountry);
 
+                    mProgressDialog.dismiss();
+
                 }
             });
 

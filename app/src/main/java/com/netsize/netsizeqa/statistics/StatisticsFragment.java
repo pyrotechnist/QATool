@@ -1,8 +1,16 @@
 package com.netsize.netsizeqa.statistics;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
+import com.netsize.netsizeqa.MainContract;
 import com.netsize.netsizeqa.R;
 import com.netsize.netsizeqa.data.TestCase;
 import com.netsize.netsizeqa.utils.MySimpleAdapter;
@@ -20,7 +28,7 @@ import java.util.Set;
 
 public class StatisticsFragment extends Fragment implements StatisticsContract.View {
 
-
+     private StatisticsContract.Presenter mStatisticsPresenter;
 
     ListView listView;
 
@@ -37,6 +45,25 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mStatisticsPresenter.start();
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.statistics_frag, container, false);
+
+
+        listView = (ListView) root.findViewById(R.id.stat_list);
+
+        return root;
+    }
+
+    @Override
     public void showStatistics(Map<String,List<TestCase>> testCasesMap) {
 
         //Map statMap = new HashMap<String, Integer>();
@@ -48,8 +75,8 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
             //statMap.put(entry.getKey().toLowerCase(),entry.getValue().size());
             HashMap<String, String> map = new HashMap<String, String>();
 
-            //map.put("Country",entry.getKey().toUpperCase());
-           map.put("Testcase",Integer.toString(entry.getValue().size()));
+            map.put("Country",entry.getKey().toLowerCase().replace(" mock",""));
+            map.put("Testcase",Integer.toString(entry.getValue().size()));
             fillMaps.add(map);
         }
 
@@ -62,7 +89,17 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
         int[] to = new int[] {  R.id.stat };
 
-        MySimpleAdapter mySimpleAdapter = new MySimpleAdapter(getContext(),fillMaps,R.id.stat_list,from,to);
+        final MySimpleAdapter mySimpleAdapter = new MySimpleAdapter(getContext(),fillMaps,R.layout.stat_item,from,to);
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                listView.setAdapter(mySimpleAdapter);
+
+            }
+        });
 
 
 
@@ -70,6 +107,8 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
 
     }
+
+
 
     @Override
     public void showLoadingStatisticsError() {
@@ -83,6 +122,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
     @Override
     public void setPresenter(StatisticsContract.Presenter presenter) {
+        mStatisticsPresenter = presenter;
 
     }
 }

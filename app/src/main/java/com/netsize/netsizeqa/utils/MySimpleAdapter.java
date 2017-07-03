@@ -1,6 +1,7 @@
 package com.netsize.netsizeqa.utils;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +36,12 @@ public class MySimpleAdapter extends SimpleAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         ImageView imageView = (ImageView) view.findViewById(R.id.country_flag);
+
+        String country = mMapList.get(position).get("Country");
+
+        view.getContext().getResources().getIdentifier(country , "drawable", view.getContext().getPackageName());
+
+        imageView.setImageResource(view.getContext().getResources().getIdentifier(country , "drawable", view.getContext().getPackageName()));
        /* imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -82,6 +82,8 @@ public class MainPresenter implements MainContract.Presenter {
 
         //downloadXML();
 
+        mMainFragment.showProgressDialog();
+
         mTestCaseRepository.getTestCases(new TestCaseSource.LoadTaskCasesCallback() {
             @Override
             public void onTasksLoaded(Map<String,List<TestCase>> testCasesMap) {
@@ -102,7 +104,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void downloadXML() {
 
-        String url= "http://dev.pay.netsize.com/merchantdemo/sdk";
+        String url= "http://int.pay.netsize.com/merchantdemo/sdk";
 
         OkHttpHandler okHttpHandler= new OkHttpHandler();
 
